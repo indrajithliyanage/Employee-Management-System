@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EMSDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="DeptID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeptName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DeptDescription" Type="varchar" MaxLength="350" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="EmpID" />
+          </Key>
+          <Property Name="EmpID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NIC" Type="varchar" MaxLength="12" Nullable="false" />
+          <Property Name="MobileNum" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Address" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="EmployeeTypeID" Type="int" Nullable="false" />
+          <Property Name="DeptID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmployeeTypes">
+          <Key>
+            <PropertyRef Name="EmployeeTypeID" />
+          </Key>
+          <Property Name="EmployeeTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeTypeName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LeaveApplies">
+          <Key>
+            <PropertyRef Name="LeaveID" />
+          </Key>
+          <Property Name="LeaveID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpID" Type="int" Nullable="false" />
+          <Property Name="LeaveFrom" Type="datetime" Nullable="false" />
+          <Property Name="LeaveTo" Type="datetime" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="150" />
+          <Property Name="LeaveTypeID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LeaveTypes">
+          <Key>
+            <PropertyRef Name="LeaveTypeID" />
+          </Key>
+          <Property Name="LeaveTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LeaveType1" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Employee_Department">
+          <End Role="Departments" Type="Self.Departments" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="DeptID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="DeptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_EmployeeType">
+          <End Role="EmployeeTypes" Type="Self.EmployeeTypes" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeTypes">
+              <PropertyRef Name="EmployeeTypeID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="EmployeeTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaveApply_Employee">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="LeaveApplies" Type="Self.LeaveApplies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmpID" />
+            </Principal>
+            <Dependent Role="LeaveApplies">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaveApply_LeaveType">
+          <End Role="LeaveTypes" Type="Self.LeaveTypes" Multiplicity="1" />
+          <End Role="LeaveApplies" Type="Self.LeaveApplies" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeaveTypes">
+              <PropertyRef Name="LeaveTypeID" />
+            </Principal>
+            <Dependent Role="LeaveApplies">
+              <PropertyRef Name="LeaveTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="DepartmentSearchSP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DeptID" Type="int" Mode="In" />
+          <Parameter Name="DeptName" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="EmployeeSearchSP" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmpID" Type="int" Mode="In" />
+          <Parameter Name="FirstName" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="EMSDBModelStoreContainer">
+          <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeTypes" EntityType="Self.EmployeeTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LeaveApplies" EntityType="Self.LeaveApplies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LeaveTypes" EntityType="Self.LeaveTypes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Employee_Department" Association="Self.FK_Employee_Department">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_EmployeeType" Association="Self.FK_Employee_EmployeeType">
+            <End Role="EmployeeTypes" EntitySet="EmployeeTypes" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaveApply_Employee" Association="Self.FK_LeaveApply_Employee">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="LeaveApplies" EntitySet="LeaveApplies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaveApply_LeaveType" Association="Self.FK_LeaveApply_LeaveType">
+            <End Role="LeaveTypes" EntitySet="LeaveTypes" />
+            <End Role="LeaveApplies" EntitySet="LeaveApplies" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EMSDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="DeptID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeptName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DeptDescription" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Employee_Department" FromRole="Departments" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmpID" />
+          </Key>
+          <Property Name="EmpID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NIC" Type="String" MaxLength="12" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MobileNum" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmployeeTypeID" Type="Int32" Nullable="false" />
+          <Property Name="DeptID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_Employee_Department" FromRole="Employees" ToRole="Departments" />
+          <NavigationProperty Name="EmployeeType" Relationship="Self.FK_Employee_EmployeeType" FromRole="Employees" ToRole="EmployeeTypes" />
+          <NavigationProperty Name="LeaveApplies" Relationship="Self.FK_LeaveApply_Employee" FromRole="Employees" ToRole="LeaveApplies" />
+        </EntityType>
+        <EntityType Name="EmployeeType">
+          <Key>
+            <PropertyRef Name="EmployeeTypeID" />
+          </Key>
+          <Property Name="EmployeeTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Employee_EmployeeType" FromRole="EmployeeTypes" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="LeaveApply">
+          <Key>
+            <PropertyRef Name="LeaveID" />
+          </Key>
+          <Property Name="LeaveID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpID" Type="Int32" Nullable="false" />
+          <Property Name="LeaveFrom" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LeaveTo" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="LeaveTypeID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_LeaveApply_Employee" FromRole="LeaveApplies" ToRole="Employees" />
+          <NavigationProperty Name="LeaveType" Relationship="Self.FK_LeaveApply_LeaveType" FromRole="LeaveApplies" ToRole="LeaveTypes" />
+        </EntityType>
+        <EntityType Name="LeaveType">
+          <Key>
+            <PropertyRef Name="LeaveTypeID" />
+          </Key>
+          <Property Name="LeaveTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LeaveType1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="LeaveApplies" Relationship="Self.FK_LeaveApply_LeaveType" FromRole="LeaveTypes" ToRole="LeaveApplies" />
+        </EntityType>
+        <Association Name="FK_Employee_Department">
+          <End Role="Departments" Type="Self.Department" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="DeptID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="DeptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_EmployeeType">
+          <End Role="EmployeeTypes" Type="Self.EmployeeType" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeTypes">
+              <PropertyRef Name="EmployeeTypeID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="EmployeeTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaveApply_Employee">
+          <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+          <End Role="LeaveApplies" Type="Self.LeaveApply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmpID" />
+            </Principal>
+            <Dependent Role="LeaveApplies">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaveApply_LeaveType">
+          <End Role="LeaveTypes" Type="Self.LeaveType" Multiplicity="1" />
+          <End Role="LeaveApplies" Type="Self.LeaveApply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeaveTypes">
+              <PropertyRef Name="LeaveTypeID" />
+            </Principal>
+            <Dependent Role="LeaveApplies">
+              <PropertyRef Name="LeaveTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EMSDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Departments" EntityType="Self.Department" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="EmployeeTypes" EntityType="Self.EmployeeType" />
+          <EntitySet Name="LeaveApplies" EntityType="Self.LeaveApply" />
+          <EntitySet Name="LeaveTypes" EntityType="Self.LeaveType" />
+          <AssociationSet Name="FK_Employee_Department" Association="Self.FK_Employee_Department">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_EmployeeType" Association="Self.FK_Employee_EmployeeType">
+            <End Role="EmployeeTypes" EntitySet="EmployeeTypes" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaveApply_Employee" Association="Self.FK_LeaveApply_Employee">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="LeaveApplies" EntitySet="LeaveApplies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaveApply_LeaveType" Association="Self.FK_LeaveApply_LeaveType">
+            <End Role="LeaveTypes" EntitySet="LeaveTypes" />
+            <End Role="LeaveApplies" EntitySet="LeaveApplies" />
+          </AssociationSet>
+          <FunctionImport Name="DepartmentSearchSP" ReturnType="Collection(EMSDBModel.DepartmentSearchSP_Result)">
+            <Parameter Name="DeptID" Mode="In" Type="Int32" />
+            <Parameter Name="DeptName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="EmployeeSearchSP" ReturnType="Collection(EMSDBModel.EmployeeSearchSP_Result)">
+            <Parameter Name="EmpID" Mode="In" Type="Int32" />
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="EmpSearchF" EntitySet="Employees" ReturnType="Collection(EMSDBModel.Employee)">
+            <Parameter Name="EmpID" Mode="In" Type="Int32" />
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DeptSearchF" EntitySet="Departments" ReturnType="Collection(EMSDBModel.Department)">
+            <Parameter Name="DeptID" Mode="In" Type="Int32" />
+            <Parameter Name="DeptName" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="DepartmentSearchSP_Result">
+          <Property Type="Int32" Name="DeptID" Nullable="false" />
+          <Property Type="String" Name="DeptName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="DeptDescription" Nullable="true" MaxLength="350" />
+        </ComplexType>
+        <ComplexType Name="EmployeeSearchSP_Result">
+          <Property Type="Int32" Name="EmpID" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LastName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="NIC" Nullable="false" MaxLength="12" />
+          <Property Type="String" Name="MobileNum" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="300" />
+          <Property Type="Int32" Name="EmployeeTypeID" Nullable="false" />
+          <Property Type="Int32" Name="DeptID" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EMSDBModelStoreContainer" CdmEntityContainer="EMSDBEntities">
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="EMSDBModel.Department">
+              <MappingFragment StoreEntitySet="Departments">
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+                <ScalarProperty Name="DeptDescription" ColumnName="DeptDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="EMSDBModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="NIC" ColumnName="NIC" />
+                <ScalarProperty Name="MobileNum" ColumnName="MobileNum" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="EmployeeTypeID" ColumnName="EmployeeTypeID" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeTypes">
+            <EntityTypeMapping TypeName="EMSDBModel.EmployeeType">
+              <MappingFragment StoreEntitySet="EmployeeTypes">
+                <ScalarProperty Name="EmployeeTypeID" ColumnName="EmployeeTypeID" />
+                <ScalarProperty Name="EmployeeTypeName" ColumnName="EmployeeTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LeaveApplies">
+            <EntityTypeMapping TypeName="EMSDBModel.LeaveApply">
+              <MappingFragment StoreEntitySet="LeaveApplies">
+                <ScalarProperty Name="LeaveID" ColumnName="LeaveID" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="LeaveFrom" ColumnName="LeaveFrom" />
+                <ScalarProperty Name="LeaveTo" ColumnName="LeaveTo" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="LeaveTypeID" ColumnName="LeaveTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LeaveTypes">
+            <EntityTypeMapping TypeName="EMSDBModel.LeaveType">
+              <MappingFragment StoreEntitySet="LeaveTypes">
+                <ScalarProperty Name="LeaveTypeID" ColumnName="LeaveTypeID" />
+                <ScalarProperty Name="LeaveType1" ColumnName="LeaveType1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DepartmentSearchSP" FunctionName="EMSDBModel.Store.DepartmentSearchSP">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EMSDBModel.DepartmentSearchSP_Result">
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+                <ScalarProperty Name="DeptDescription" ColumnName="DeptDescription" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="EmployeeSearchSP" FunctionName="EMSDBModel.Store.EmployeeSearchSP">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EMSDBModel.EmployeeSearchSP_Result">
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="NIC" ColumnName="NIC" />
+                <ScalarProperty Name="MobileNum" ColumnName="MobileNum" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="EmployeeTypeID" ColumnName="EmployeeTypeID" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="EmpSearchF" FunctionName="EMSDBModel.Store.EmployeeSearchSP" />
+          <FunctionImportMapping FunctionImportName="DeptSearchF" FunctionName="EMSDBModel.Store.DepartmentSearchSP" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

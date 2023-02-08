@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="EMSDBModelStoreContainer" CdmEntityContainer="EMSDBEntities">
+    <EntitySetMapping Name="Departments">
+      <EntityTypeMapping TypeName="EMSDBModel.Department">
+        <MappingFragment StoreEntitySet="Departments">
+          <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+          <ScalarProperty Name="DeptDescription" ColumnName="DeptDescription" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employees">
+      <EntityTypeMapping TypeName="EMSDBModel.Employee">
+        <MappingFragment StoreEntitySet="Employees">
+          <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="NIC" ColumnName="NIC" />
+          <ScalarProperty Name="MobileNum" ColumnName="MobileNum" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="EmployeeTypeID" ColumnName="EmployeeTypeID" />
+          <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EmployeeTypes">
+      <EntityTypeMapping TypeName="EMSDBModel.EmployeeType">
+        <MappingFragment StoreEntitySet="EmployeeTypes">
+          <ScalarProperty Name="EmployeeTypeID" ColumnName="EmployeeTypeID" />
+          <ScalarProperty Name="EmployeeTypeName" ColumnName="EmployeeTypeName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LeaveApplies">
+      <EntityTypeMapping TypeName="EMSDBModel.LeaveApply">
+        <MappingFragment StoreEntitySet="LeaveApplies">
+          <ScalarProperty Name="LeaveID" ColumnName="LeaveID" />
+          <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+          <ScalarProperty Name="LeaveFrom" ColumnName="LeaveFrom" />
+          <ScalarProperty Name="LeaveTo" ColumnName="LeaveTo" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="LeaveTypeID" ColumnName="LeaveTypeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LeaveTypes">
+      <EntityTypeMapping TypeName="EMSDBModel.LeaveType">
+        <MappingFragment StoreEntitySet="LeaveTypes">
+          <ScalarProperty Name="LeaveTypeID" ColumnName="LeaveTypeID" />
+          <ScalarProperty Name="LeaveType1" ColumnName="LeaveType1" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="DepartmentSearchSP" FunctionName="EMSDBModel.Store.DepartmentSearchSP">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EMSDBModel.DepartmentSearchSP_Result">
+          <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+          <ScalarProperty Name="DeptDescription" ColumnName="DeptDescription" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="EmployeeSearchSP" FunctionName="EMSDBModel.Store.EmployeeSearchSP">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EMSDBModel.EmployeeSearchSP_Result">
+          <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="NIC" ColumnName="NIC" />
+          <ScalarProperty Name="MobileNum" ColumnName="MobileNum" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="EmployeeTypeID" ColumnName="EmployeeTypeID" />
+          <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="EmpSearchF" FunctionName="EMSDBModel.Store.EmployeeSearchSP" />
+    <FunctionImportMapping FunctionImportName="DeptSearchF" FunctionName="EMSDBModel.Store.DepartmentSearchSP" />
+  </EntityContainerMapping>
+</Mapping>
